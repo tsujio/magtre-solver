@@ -99,6 +99,7 @@ const doesSmallerOrderExist = (vertices, threshold) => {
   let cc = vertices.map(v => [v])
   while (cc.length > 1) {
     const next = []
+    let allFound = true
     for (const c1 of cc) {
       let found = false
       let c = [...c1]
@@ -111,24 +112,32 @@ const doesSmallerOrderExist = (vertices, threshold) => {
           found = true
         }
       }
-      if (!found) {
-        return Math.min(...cc.map(c => c.length)) < threshold
-      }
       addToSet(c, next)
+      if (!found) {
+        allFound = false
+      }
     }
     cc = next
+    const minOrder = Math.min(...cc.map(c => c.length))
+    if (!allFound) {
+      return minOrder < threshold
+    }
+    if (minOrder >= threshold) {
+      return false
+    }
   }
   return Math.min(...cc.map(c => c.length)) < threshold
 }
 
-const resolve = (target, blocks, solution, callback) => {
-  if (blocks.length <= 0) {
-    callback(solution)
-    return
+const rotateCaseCache = {}
+const getRotateCases = block => {
+  for (const [b, cases] of Object.entries(rotateCaseCache)) {
+    if (blockeq(block, JSON.parse(b))) {
+      return cases
+    }
   }
 
-  const rotationCache = []
-  const solutions = []
+  const cases = []
   for (const r1 of [rotateX, rotateY, rotateZ]) {
     for (const n1 of [0, 1, 2, 3]) {
       for (const r2 of [rotateX, rotateY, rotateZ]) {
@@ -138,41 +147,62 @@ const resolve = (target, blocks, solution, callback) => {
               if (r1 === r2 || r2 === r3 || r3 === r1) {
                 continue
               }
-              const b = blocks[0]
-              const rb = r3(r2(r1(b, n1), n2), n3)
-              if (rotationCache.some(c => blocktranseq(c, rb))) {
+              const b = r3(r2(r1(block, n1), n2), n3)
+              if (cases.some(c => blocktranseq(c.after, b))) {
                 continue
               }
-              rotationCache.push(rb)
-
-              for (const p of target) {
-                const tb = rb.map(v => vecadd(v, p))
-                const next = blocksub(target, tb)
-
-                if (target.length - next.length !== tb.length) {
-                  continue
-                }
-
-                const minOrder = Math.min(...blocks.slice(1).map(b => b.length))
-                if (doesSmallerOrderExist(next, minOrder)) {
-                  continue
-                }
-
-                resolve(next, blocks.slice(1), [...solution, {
-                  block: b,
-                  r1: r1,
-                  n1: n1,
-                  r2: r2,
-                  n2: n2,
-                  r3: r3,
-                  n3: n3,
-                  p: p,
-                }], callback)
-              }
+              cases.push({
+                before: block,
+                r1: r1,
+                n1: n1,
+                r2: r2,
+                n2: n2,
+                r3: r3,
+                n3: n3,
+                after: b,
+              })
             }
           }
         }
       }
+    }
+  }
+
+  rotateCaseCache[JSON.stringify(block)] = cases
+  return cases
+}
+
+const resolve = (target, blocks, solution, callback) => {
+  if (blocks.length <= 0) {
+    callback(solution)
+    return
+  }
+
+  const solutions = []
+  for (const c of getRotateCases(blocks[0])) {
+    for (const p of target) {
+      const tb = c.after.map(v => vecadd(v, p))
+      const next = blocksub(target, tb)
+
+      if (target.length - next.length !== tb.length) {
+        continue
+      }
+
+      const minOrder = Math.min(...blocks.slice(1).map(b => b.length))
+      if (doesSmallerOrderExist(next, minOrder)) {
+        continue
+      }
+
+      resolve(next, blocks.slice(1), [...solution, {
+        block: c.before,
+        r1: c.r1,
+        n1: c.n1,
+        r2: c.r2,
+        n2: c.n2,
+        r3: c.r3,
+        n3: c.n3,
+        p: p,
+      }], callback)
     }
   }
 }

@@ -85,6 +85,7 @@ const target = targets[blocks.length]
 
 import * as THREE from "./three.js/build/three.module.js"
 import { TrackballControls } from "./three.js/examples/jsm/controls/TrackballControls.js"
+import { RoundedBoxGeometry } from './three.js/examples/jsm/geometries/RoundedBoxGeometry.js'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -96,7 +97,7 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 const controls = new TrackballControls(camera, renderer.domElement)
-const geometry = new THREE.BoxGeometry()
+const geometry = new RoundedBoxGeometry(1, 1, 1, 1)
 const animate = () => {
   requestAnimationFrame(animate)
   controls.update()
