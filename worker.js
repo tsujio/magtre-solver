@@ -132,7 +132,7 @@ const doesSmallerOrderExist = (vertices, threshold) => {
 const rotateCaseCache = {}
 const getRotateCases = block => {
   for (const [b, cases] of Object.entries(rotateCaseCache)) {
-    if (blockeq(block, JSON.parse(b))) {
+    if (blockeq(block.vecs, JSON.parse(b))) {
       return cases
     }
   }
@@ -147,12 +147,12 @@ const getRotateCases = block => {
               if (r1 === r2 || r2 === r3 || r3 === r1) {
                 continue
               }
-              const b = r3(r2(r1(block, n1), n2), n3)
+              const b = r3(r2(r1(block.vecs, n1), n2), n3)
               if (cases.some(c => blocktranseq(c.after, b))) {
                 continue
               }
               cases.push({
-                before: block,
+                before: block.vecs,
                 r1: r1,
                 n1: n1,
                 r2: r2,
@@ -168,17 +168,19 @@ const getRotateCases = block => {
     }
   }
 
-  rotateCaseCache[JSON.stringify(block)] = cases
+  rotateCaseCache[JSON.stringify(block.vecs)] = cases
   return cases
 }
 
 const resolve = (target, blocks, solution, callback) => {
-  if (blocks.length <= 0) {
+  if (target.length === 0) {
     callback(solution)
     return
   }
+  if (blocks.length === 0) {
+    return
+  }
 
-  const solutions = []
   for (const c of getRotateCases(blocks[0])) {
     for (const p of target) {
       const tb = c.after.map(v => vecadd(v, p))
@@ -188,13 +190,13 @@ const resolve = (target, blocks, solution, callback) => {
         continue
       }
 
-      const minOrder = Math.min(...blocks.slice(1).map(b => b.length))
+      const minOrder = Math.min(...blocks.slice(1).map(b => b.vecs.length))
       if (doesSmallerOrderExist(next, minOrder)) {
         continue
       }
 
       resolve(next, blocks.slice(1), [...solution, {
-        block: c.before,
+        block: blocks[0],
         r1: c.r1,
         n1: c.n1,
         r2: c.r2,
@@ -209,7 +211,16 @@ const resolve = (target, blocks, solution, callback) => {
 
 onmessage = e => {
   const [target, blocks] = e.data
-  resolve(target, blocks, [], solution => {
-    postMessage(solution.map(b => ({position: b.r3(b.r2(b.r1(b.block, b.n1), b.n2), b.n3).map(v => vecadd(v, b.p))})))
+  resolve(target.vecs, blocks, [], solution => {
+    postMessage({
+      message: "found",
+      solution: solution.map(b => ({
+        block: b.block,
+        position: b.r3(b.r2(b.r1(b.block.vecs, b.n1), b.n2), b.n3).map(v => vecadd(v, b.p)),
+      }))
+    })
+  })
+  postMessage({
+    message: "end",
   })
 }
