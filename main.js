@@ -25,12 +25,14 @@ const openSidebar = () => {
   sidebar.classList.remove("close")
   mainContainer.classList.remove("full")
   setTimeout(resizeCanvas, 100)
+  setTimeout(resizeCanvas, 150)
 }
 
 const closeSidebar = () => {
   sidebar.classList.add("close")
   mainContainer.classList.add("full")
   setTimeout(resizeCanvas, 100)
+  setTimeout(resizeCanvas, 150)
 }
 
 sidebarCloseButton.addEventListener("click", closeSidebar)
@@ -65,6 +67,7 @@ const startSearch = target => {
   }
 
   solutions = []
+  solutionSelector.classList.remove("hidden")
   solutionSelector.innerHTML = ""
   showBlocks([])
   messageContainer.textContent = ""
@@ -115,6 +118,17 @@ const startSearch = target => {
   worker.postMessage([target, blocks.filter(b => target.blocks.includes(b.id))])
 }
 
+const selectTarget = target => {
+  if (target) {
+    startSearch(target)
+  }
+}
+
+window.addEventListener("popstate", () => {
+  const targetId = new URL(window.location).searchParams.get("target")
+  selectTarget(targetId === null ? null : targets[parseInt(targetId) - 1])
+})
+
 mainContainer.style.height = window.innerHeight + "px"
 sidebar.style.height = window.innerHeight = "px"
 
@@ -123,11 +137,19 @@ targets.forEach((t, i) => {
   img.className = "target-image"
   img.src = createImageURL(t.vecs)
   img.addEventListener("click", () => {
-    solutionSelector.classList.remove("hidden")
-    startSearch(t)
+    const url = new URL(window.location)
+    url.searchParams.set("target", i + 1)
+    history.pushState({}, "", url)
+
+    selectTarget(t)
   })
   targetList.appendChild(img)
 })
 
 setUpCanvas(canvas)
 resizeCanvas()
+
+const targetId = new URL(window.location).searchParams.get("target")
+if (targetId) {
+  selectTarget(targets[parseInt(targetId) - 1])
+}
