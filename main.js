@@ -6,6 +6,7 @@ const smallWindowWidthThreshold = 1000
 const mainContainer = document.querySelector("#main-container")
 const canvasContainer = document.querySelector("#canvas-container")
 const canvas = document.querySelector("#canvas")
+const title = document.querySelector("#title")
 const targetList = document.querySelector("#target-list")
 const targetListItemTemplate = document.querySelector("#tmpl-target-list-item")
 const sidebar = document.querySelector("#sidebar")
@@ -17,6 +18,12 @@ const loading = document.querySelector("#loading")
 
 let solutions = []
 let worker
+
+title.addEventListener("click", () => {
+  const url = new URL(window.location)
+  url.search = ""
+  document.location = url.toString()
+})
 
 const resizeCanvas = () => {
   canvas.width = canvasContainer.clientWidth
