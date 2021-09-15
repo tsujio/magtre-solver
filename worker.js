@@ -135,7 +135,7 @@ const doesSmallerOrderExist = (vertices, threshold) => {
 const rotateCaseCache = {}
 const getRotateCases = block => {
   for (const [b, cases] of Object.entries(rotateCaseCache)) {
-    if (blockeq(block.vecs, JSON.parse(b))) {
+    if (blockeq(block, JSON.parse(b))) {
       return cases
     }
   }
@@ -150,19 +150,19 @@ const getRotateCases = block => {
               if (r1 === r2 || r2 === r3 || r3 === r1) {
                 continue
               }
-              const b = r3(r2(r1(block.vecs, n1), n2), n3)
-              if (cases.some(c => blocktranseq(c.after, b))) {
+              const after = r3(r2(r1(block, n1), n2), n3)
+              if (cases.some(c => blocktranseq(c.after, after))) {
                 continue
               }
               cases.push({
-                before: block.vecs,
+                before: block,
                 r1: r1,
                 n1: n1,
                 r2: r2,
                 n2: n2,
                 r3: r3,
                 n3: n3,
-                after: b,
+                after: after,
               })
             }
           }
@@ -171,7 +171,7 @@ const getRotateCases = block => {
     }
   }
 
-  rotateCaseCache[JSON.stringify(block.vecs)] = cases
+  rotateCaseCache[JSON.stringify(block)] = cases
   return cases
 }
 
@@ -186,14 +186,14 @@ const resolve = (target, blocks, solution, callback) => {
 
   for (const c of getRotateCases(blocks[0])) {
     for (const p of target) {
-      const tb = c.after.map(v => vecadd(v, p))
-      const next = blocksub(target, tb)
+      const b = c.after.map(v => vecadd(v, p))
+      const next = blocksub(target, b)
 
-      if (target.length - next.length !== tb.length) {
+      if (target.length - next.length !== b.length) {
         continue
       }
 
-      const minOrder = Math.min(...blocks.slice(1).map(b => b.vecs.length))
+      const minOrder = Math.min(...blocks.slice(1).map(b => b.length))
       if (doesSmallerOrderExist(next, minOrder)) {
         continue
       }
@@ -207,7 +207,7 @@ const resolve = (target, blocks, solution, callback) => {
         r3: c.r3,
         n3: c.n3,
         shift: p,
-        vecs: tb,
+        vecs: b,
       }], callback)
     }
   }
@@ -227,7 +227,7 @@ const isDuplicatedSolution = solution => {
               }
               const rotated = solution.map(b => r3(r2(r1(b.vecs, n1), n2), n3))
               for (const s of solutions) {
-                const diffs = zip(rotated, s).map(([b1, b2]) => blocktransoffset(b1, b2.vecs))
+                const diffs = zip(rotated, s.map(b => b.vecs)).map(([b1, b2]) => blocktransoffset(b1, b2))
                 if (diffs.every(d => d !== null && veceq(d, diffs[0]))) {
                   return true
                 }
@@ -243,7 +243,7 @@ const isDuplicatedSolution = solution => {
 
 onmessage = e => {
   const [target, blocks] = e.data
-  resolve(target.vecs, blocks, [], solution => {
+  resolve(target.vecs, blocks.map(b => b.vecs), [], solution => {
     if (isDuplicatedSolution(solution)) {
       return
     }
@@ -251,9 +251,9 @@ onmessage = e => {
 
     postMessage({
       message: "found",
-      solution: solution.map(b => ({
-        block: b.block,
-        position: b.vecs,
+      solution: solution.map((b, i) => ({
+        block: blocks[i],
+        vecs: b.vecs,
       }))
     })
   })

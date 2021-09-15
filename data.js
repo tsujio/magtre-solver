@@ -979,3 +979,5 @@ export const targets = [
     `),
   },
 ]
+
+targets.forEach((t, i) => t.id = i + 1)

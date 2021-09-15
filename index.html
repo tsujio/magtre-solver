@@ -19,10 +19,18 @@
         <h1 class="title">MAGTRE Solver</h1>
       </div>
       <div id="target-list"></div>
+      <template id="tmpl-target-list-item">
+        <div class="target-list-item">
+          <span class="target-number"></span>
+          <img class="target-image" />
+        </div>
+      </template>
     </div>
+
     <button id="sidebar-open-button" class="sidebar-open-button">
       <span class="material-icons">menu</span>
     </button>
+
     <div id="main-container" class="main">
       <div class="navigation">
         <span id="loading" class="material-icons loading hidden">rotate_left</span>
@@ -33,7 +41,9 @@
         <canvas id="canvas"></canvas>
       </div>
       <div class="footer">
-        <a class="link" href="https://github.com/tsujio/magtre-solver"><span class="material-icons">code</span></a>
+        <a class="link" href="https://www.amazon.co.jp/dp/B07VN1YJHP">MAGTRE</a>
+        <span class="separator">|</span>
+        <a class="link" href="https://github.com/tsujio/magtre-solver">ソースコード</a>
         <span class="separator">|</span>
         <a class="link" href="https://www.tsujio.org">&copy; 辻尾研</a>
       </div>

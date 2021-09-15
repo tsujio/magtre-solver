@@ -78,8 +78,23 @@ body {
     z-index: 998;
 }
 
-.target-image {
+.target-list-item {
+    position: relative;
     margin-top: 12px;
+}
+
+.target-list-item.active {
+    border: 6px solid orange;
+}
+
+.target-number {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: white;
+}
+
+.target-image {
     display: block;
     width: 100%;
 }

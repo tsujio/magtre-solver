@@ -7,6 +7,7 @@ const mainContainer = document.querySelector("#main-container")
 const canvasContainer = document.querySelector("#canvas-container")
 const canvas = document.querySelector("#canvas")
 const targetList = document.querySelector("#target-list")
+const targetListItemTemplate = document.querySelector("#tmpl-target-list-item")
 const sidebar = document.querySelector("#sidebar")
 const sidebarOpenButton = document.querySelector("#sidebar-open-button")
 const sidebarCloseButton = document.querySelector("#sidebar-close-button")
@@ -59,7 +60,7 @@ solutionSelector.addEventListener("change", e => {
   const solution = solutions[parseInt(e.target.value)]
   showBlocks(solution.map(s => ({
     color: s.block.color,
-    vecs: s.position,
+    vecs: s.vecs,
   })))
 })
 
@@ -93,7 +94,7 @@ const startSearch = target => {
 
         solutions.push(solution)
 
-        messageContainer.textContent = `${solutions.length} solution${solutions.length > 1 ? "s" : ""} found`
+        messageContainer.textContent = `${solutions.length} pattern${solutions.length > 1 ? "s" : ""} found`
 
         // Add to selector
         const o = document.createElement("option")
@@ -104,7 +105,7 @@ const startSearch = target => {
         if (solutions.length === 1) {
           showBlocks(solution.map(s => ({
             color: s.block.color,
-            vecs: s.position,
+            vecs: s.vecs,
           })))
         }
 
@@ -121,11 +122,17 @@ const startSearch = target => {
 }
 
 const selectTarget = target => {
+  targetList.querySelectorAll(".target-list-item").forEach(elm => {
+    elm.classList.remove("active")
+  })
+
   if (window.innerWidth < smallWindowWidthThreshold) {
     closeSidebar()
   }
 
   if (target) {
+    targetList.querySelector(`.target-list-item[data-target-id='${target.id}']`).classList.add("active")
+
     startSearch(target)
   }
 }
@@ -138,18 +145,26 @@ window.addEventListener("popstate", () => {
 mainContainer.style.height = window.innerHeight + "px"
 sidebar.style.height = window.innerHeight = "px"
 
-targets.forEach((t, i) => {
-  const img = document.createElement("img")
-  img.className = "target-image"
+targets.forEach(t => {
+  const node = targetListItemTemplate.content.cloneNode(true)
+
+  const img = node.querySelector(".target-image")
   img.src = createImageURL(t.vecs)
-  img.addEventListener("click", () => {
+
+  const tn = node.querySelector(".target-number")
+  tn.textContent = (n => n > 9 ? n : "0" + n)(t.id)
+
+  const item = node.querySelector(".target-list-item")
+  item.setAttribute("data-target-id", t.id)
+  item.addEventListener("click", () => {
     const url = new URL(window.location)
-    url.searchParams.set("target", i + 1)
+    url.searchParams.set("target", t.id)
     history.pushState({}, "", url)
 
     selectTarget(t)
   })
-  targetList.appendChild(img)
+
+  targetList.appendChild(node)
 })
 
 setUpCanvas(canvas)

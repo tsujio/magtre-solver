@@ -63,7 +63,7 @@ export const canvasResized = canvas => {
   renderer.setSize(canvas.width, canvas.height)
 }
 
-const createImageURLGenerator = () => {
+export const createImageURL = (() => {
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(75, 400 / 300, 0.1, 1000)
   camera.position.set(-4, -4, 4)
@@ -93,6 +93,4 @@ const createImageURLGenerator = () => {
     renderer.render(scene, camera)
     return renderer.domElement.toDataURL()
   }
-}
-
-export const createImageURL = createImageURLGenerator()
+})()
