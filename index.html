@@ -8,9 +8,6 @@
     <script type="module" src="./main.js"></script>
   </head>
   <body>
-    <div class="navigation">
-      <select id="solusions"></select>
-    </div>
     <div id="sidebar" class="sidebar">
       <div class="sidebar-header">
         <button id="sidebar-close-button" class="sidebar-close-button">
@@ -22,8 +19,17 @@
     <button id="sidebar-open-button" class="sidebar-open-button">
       <span class="material-icons">menu</span>
     </button>
-    <div id="canvas-container" class="canvas-container">
-      <canvas id="canvas"></canvas>
+    <div id="main-container" class="main">
+      <div class="navigation">
+        <span id="message" class="message"></span>
+        <select id="solution-selector" class="solution-selector"></select>
+      </div>
+      <div id="canvas-container" class="canvas-container">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="footer">
+        <a class="link" href="https://www.tsujio.org">&copy; 辻尾研</a>
+      </div>
     </div>
   </body>
 </html>

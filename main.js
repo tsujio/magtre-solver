@@ -1,55 +1,57 @@
 import { blocks, targets } from "./data.js"
 import { setUpCanvas, showBlocks, canvasResized, createImageURL } from "./draw.js"
 
+const mainContainer = document.querySelector("#main-container")
 const canvasContainer = document.querySelector("#canvas-container")
 const canvas = document.querySelector("#canvas")
 const targetList = document.querySelector("#target-list")
 const sidebar = document.querySelector("#sidebar")
 const sidebarOpenButton = document.querySelector("#sidebar-open-button")
 const sidebarCloseButton = document.querySelector("#sidebar-close-button")
+const solutionSelector = document.querySelector("#solution-selector")
+const messageContainer = document.querySelector("#message")
+
+let solutions = []
+let worker
 
 const resizeCanvas = () => {
-  const container = document.querySelector("#canvas-container")
-  canvas.width = container.clientWidth
-  canvas.height = container.clientHeight
+  canvas.width = canvasContainer.clientWidth
+  canvas.height = canvasContainer.clientHeight
   canvasResized(canvas)
 }
 
 window.addEventListener("resize", resizeCanvas)
 
-targets.forEach((t, i) => {
-  const img = document.createElement("img")
-  img.className = "target-image"
-  img.src = createImageURL(t.vecs)
-  img.addEventListener("click", () => {
-    startSearch(t)
-  })
-  targetList.appendChild(img)
-})
-
 sidebarCloseButton.addEventListener("click", () => {
   sidebar.classList.add("close")
-  canvasContainer.classList.add("full")
+  mainContainer.classList.add("full")
   setTimeout(resizeCanvas, 100)
 })
 
 sidebarOpenButton.addEventListener("click", () => {
   sidebar.classList.remove("close")
-  canvasContainer.classList.remove("full")
+  mainContainer.classList.remove("full")
   setTimeout(resizeCanvas, 100)
 })
 
-setUpCanvas(canvas)
-resizeCanvas()
+solutionSelector.addEventListener("change", e => {
+  const solution = solutions[parseInt(e.target.value)]
+  showBlocks(solution.map(s => ({
+    color: s.block.color,
+    vecs: s.position,
+  })))
+})
 
-let worker
 const startSearch = target => {
   if (worker) {
     worker.terminate()
   }
 
-  solutions.splice(0)
-  selector.innerHTML = ""
+  solutions = []
+  solutionSelector.innerHTML = ""
+  showBlocks([])
+
+  messageContainer.textContent = "Searching solutions..."
 
   const start = new Date()
   console.log("started", start, target)
@@ -65,11 +67,13 @@ const startSearch = target => {
 
         solutions.push(solution)
 
+        messageContainer.textContent = `Searching solutions... (${solutions.length} solution${solutions.length > 1 ? "s" : ""} found)`
+
         // Add to selector
         const o = document.createElement("option")
-        o.textContent = solutions.length - 1
+        o.textContent = solutions.length
         o.setAttribute("value", solutions.length - 1)
-        selector.appendChild(o)
+        solutionSelector.appendChild(o)
 
         if (solutions.length === 1) {
           showBlocks(solution.map(s => ({
@@ -82,6 +86,7 @@ const startSearch = target => {
 
       case "end":
         console.log("end")
+        messageContainer.textContent = `${solutions.length} solution${solutions.length > 1 ? "s" : ""} found`
         break
     }
   }
@@ -89,13 +94,15 @@ const startSearch = target => {
   worker.postMessage([target, blocks.filter(b => target.blocks.includes(b.id))])
 }
 
-// Solution selector
-const solutions = []
-const selector = document.querySelector("#solusions")
-selector.addEventListener("change", e => {
-  const solution = solutions[parseInt(e.target.value)]
-  showBlocks(solution.map(s => ({
-    color: s.block.color,
-    vecs: s.position,
-  })))
+targets.forEach((t, i) => {
+  const img = document.createElement("img")
+  img.className = "target-image"
+  img.src = createImageURL(t.vecs)
+  img.addEventListener("click", () => {
+    startSearch(t)
+  })
+  targetList.appendChild(img)
 })
+
+setUpCanvas(canvas)
+resizeCanvas()
