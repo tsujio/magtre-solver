@@ -1,6 +1,8 @@
 import { blocks, targets } from "./data.js"
 import { setUpCanvas, showBlocks, canvasResized, createImageURL } from "./draw.js"
 
+const smallWindowWidthThreshold = 1000
+
 const mainContainer = document.querySelector("#main-container")
 const canvasContainer = document.querySelector("#canvas-container")
 const canvas = document.querySelector("#canvas")
@@ -46,7 +48,7 @@ sidebar.addEventListener("touchmove", e => {
   touchEndX = e.touches[0].pageX
 })
 sidebar.addEventListener("touchend", () => {
-  if (touchEndX - touchStartX < -30) {
+  if (touchEndX - touchStartX < -50) {
     closeSidebar()
   }
 })
@@ -119,6 +121,10 @@ const startSearch = target => {
 }
 
 const selectTarget = target => {
+  if (window.innerWidth < smallWindowWidthThreshold) {
+    closeSidebar()
+  }
+
   if (target) {
     startSearch(target)
   }

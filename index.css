@@ -44,9 +44,8 @@ body {
 
 .sidebar-close-button-container {
     position: sticky;
-    top: 0;
+    top: 12px;
     float: right;
-    margin-top: 12px;
 }
 
 .sidebar-close-button {
@@ -115,6 +114,7 @@ body {
     padding: 8px 16px;
     min-width: 96px;
     outline: none;
+    border-radius: 4px;
 }
 
 .loading {
