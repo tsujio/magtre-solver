@@ -115,6 +115,9 @@ const startSearch = target => {
   worker.postMessage([target, blocks.filter(b => target.blocks.includes(b.id))])
 }
 
+mainContainer.style.height = window.innerHeight + "px"
+sidebar.style.height = window.innerHeight = "px"
+
 targets.forEach((t, i) => {
   const img = document.createElement("img")
   img.className = "target-image"
