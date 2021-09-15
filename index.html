@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./index.css" />
     <script type="module" src="./main.js"></script>
   </head>
@@ -10,9 +11,17 @@
     <div class="navigation">
       <select id="solusions"></select>
     </div>
-    <div class="sidebar">
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <button id="sidebar-close-button" class="sidebar-close-button">
+          <span class="material-icons">navigate_before</span>
+        </button>
+      </div>
       <div id="target-list"></div>
     </div>
+    <button id="sidebar-open-button" class="sidebar-open-button">
+      <span class="material-icons">menu</span>
+    </button>
     <div id="canvas-container" class="canvas-container">
       <canvas id="canvas"></canvas>
     </div>

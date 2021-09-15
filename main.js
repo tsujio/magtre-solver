@@ -1,20 +1,12 @@
 import { blocks, targets } from "./data.js"
 import { setUpCanvas, showBlocks, canvasResized, createImageURL } from "./draw.js"
 
-const targetList = document.querySelector("#target-list")
-targets.forEach((t, i) => {
-  const img = document.createElement("img")
-  img.className = "target-image"
-  img.src = createImageURL(t.vecs)
-  img.addEventListener("click", () => {
-    startSearch(t)
-  })
-  targetList.appendChild(img)
-})
-
+const canvasContainer = document.querySelector("#canvas-container")
 const canvas = document.querySelector("#canvas")
-
-setUpCanvas(canvas)
+const targetList = document.querySelector("#target-list")
+const sidebar = document.querySelector("#sidebar")
+const sidebarOpenButton = document.querySelector("#sidebar-open-button")
+const sidebarCloseButton = document.querySelector("#sidebar-close-button")
 
 const resizeCanvas = () => {
   const container = document.querySelector("#canvas-container")
@@ -25,6 +17,29 @@ const resizeCanvas = () => {
 
 window.addEventListener("resize", resizeCanvas)
 
+targets.forEach((t, i) => {
+  const img = document.createElement("img")
+  img.className = "target-image"
+  img.src = createImageURL(t.vecs)
+  img.addEventListener("click", () => {
+    startSearch(t)
+  })
+  targetList.appendChild(img)
+})
+
+sidebarCloseButton.addEventListener("click", () => {
+  sidebar.classList.add("close")
+  canvasContainer.classList.add("full")
+  setTimeout(resizeCanvas, 100)
+})
+
+sidebarOpenButton.addEventListener("click", () => {
+  sidebar.classList.remove("close")
+  canvasContainer.classList.remove("full")
+  setTimeout(resizeCanvas, 100)
+})
+
+setUpCanvas(canvas)
 resizeCanvas()
 
 let worker

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background: black;
 }
 
 .navigation {
@@ -15,11 +16,55 @@ body {
     left: 0;
     width: 250px;
     height: 100vh;
-    background: #e5e5e5;
-    overflow: scroll;
+    overflow-y: scroll;
+    padding: 0 8px;
+    box-sizing: border-box;
+    transition: left 0.1s;
+    background: white;
+    z-index: 999;
+}
+
+.sidebar.close {
+    left: -250px;
+}
+
+.sidebar-header::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.sidebar-close-button {
+    border: none;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 1px 1px 2px silver;
+    float: right;
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.sidebar-close-button:hover {
+    background: whitesmoke;
+}
+
+.sidebar-close-button:active {
+    background: white;
+}
+
+.sidebar-open-button {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: black;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
 
 .target-image {
+    margin-top: 12px;
+    display: block;
     width: 100%;
 }
 
@@ -27,4 +72,10 @@ body {
     margin-left: 250px;
     width: calc(100% - 250px);
     height: 100vh;
+    transition: margin-left 0.1s, width 0.1s;
+}
+
+.canvas-container.full {
+    margin-left: 0;
+    width: 100%;
 }
