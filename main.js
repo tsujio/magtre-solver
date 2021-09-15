@@ -60,6 +60,10 @@ const startSearch = target => {
   worker.onerror = e => console.log(e)
   worker.onmessage = e => {
     switch (e.data.message) {
+      case "log":
+        console.log(...e.data.body)
+        break
+
       case "found":
         const solution = e.data.solution
 

@@ -61,17 +61,20 @@ const blocksub = (b1, b2) =>
     b2.every(v2 => !veceq(v1, v2))
   )
 
-const blocktranseq = (b1, b2) => {
+const blocktransoffset = (b1, b2) => {
   const v1 = b1[0]
   for (const v2 of b2) {
     const d = vecsub(v2, v1)
     const b = b1.map(v => vecadd(v, d))
     if (blockeq(b, b2)) {
-      return true
+      return d
     }
   }
-  return false
+  return null
 }
+
+const blocktranseq = (b1, b2) =>
+  blocktransoffset(b1, b2) !== null
 
 const doesSmallerOrderExist = (vertices, threshold) => {
   const areConnected = (v1, v2) =>
@@ -203,20 +206,54 @@ const resolve = (target, blocks, solution, callback) => {
         n2: c.n2,
         r3: c.r3,
         n3: c.n3,
-        p: p,
+        shift: p,
+        vecs: tb,
       }], callback)
     }
   }
 }
 
+const solutions = []
+
+const isDuplicatedSolution = solution => {
+  for (const r1 of [rotateX, rotateY, rotateZ]) {
+    for (const n1 of [0, 1, 2, 3]) {
+      for (const r2 of [rotateX, rotateY, rotateZ]) {
+        for (const n2 of [0, 1, 2, 3]) {
+          for (const r3 of [rotateX, rotateY, rotateZ]) {
+            for (const n3 of [0, 1, 2, 3]) {
+              if (r1 === r2 || r2 === r3 || r3 === r1) {
+                continue
+              }
+              const rotated = solution.map(b => r3(r2(r1(b.vecs, n1), n2), n3))
+              for (const s of solutions) {
+                const diffs = zip(rotated, s).map(([b1, b2]) => blocktransoffset(b1, b2.vecs))
+                if (diffs.every(d => d !== null && veceq(d, diffs[0]))) {
+                  return true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false
+}
+
 onmessage = e => {
   const [target, blocks] = e.data
   resolve(target.vecs, blocks, [], solution => {
+    if (isDuplicatedSolution(solution)) {
+      return
+    }
+    solutions.push(solution)
+
     postMessage({
       message: "found",
       solution: solution.map(b => ({
         block: b.block,
-        position: b.r3(b.r2(b.r1(b.block.vecs, b.n1), b.n2), b.n3).map(v => vecadd(v, b.p)),
+        position: b.vecs,
       }))
     })
   })
