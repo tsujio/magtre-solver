@@ -195,255 +195,771 @@ export const targets = [
     `),
   },
   {
-    blocks: [],
+    blocks: ["green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    #####
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+      #
+      #
+    ###
+    ---
+      #
+      #
+    ###
+    ---
+      #
+      #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "red", "pink"],
     vecs: parseShape(`\
-
+    # #
+       
+    # #
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+       
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "red", "pink"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+       
+      #
+     ##
+    ---
+       
+      #
+     ##
+    ---
+       
+       
+      #
     `),
   },
   {
-    blocks: [],
+    blocks: ["orange", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    # #
+    ###
+    ###
+    ---
+       
+    # #
+    ###
+    ---
+       
+       
+    # #
     `),
   },
   {
-    blocks: [],
+    blocks: ["orange", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+       
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "pink"],
     vecs: parseShape(`\
-
+     ##
+    ###
+    ###
+    ---
+      #
+      #
+    ###
+    ---
+       
+      #
+     ##
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ---
+     # 
+    ###
+    ---
+    # #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+     # 
+       
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "red", "pink"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    -----
+    #####
+    #####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    #####
+    -----
+    #   #
+         
+    #   #
     `),
   },
   {
-    blocks: [],
+    blocks: ["orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+      #
+      #
+    ###
+    ---
+      #
+      #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "orange", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+      ##
+      ##
+    ####
+    ####
+    ----
+       #
+       #
+       #
+    ####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "red", "pink"],
     vecs: parseShape(`\
-
+      #
+    ###
+    #  
+    ---
+      #
+    ###
+    #  
+    ---
+      #
+    ###
+    #  
+    ---
+      #
+    ###
+    #  
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "red", "yellow"],
     vecs: parseShape(`\
-
+       #
+      ##
+     ###
+    ####
+    ----
+        
+       #
+      ##
+     ###
+    ----
+        
+        
+       #
+      ##
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+    # #
+    ###
+    ---
+    # #
+    ###
+    ---
+       
+    ###
+    ---
+    # #
+    ###
+    ---
+       
+     # 
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink"],
     vecs: parseShape(`\
-
+    ####
+    ####
+    ####
+    ----
+        
+    ####
+    ####
+    ----
+        
+        
+    ####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+     # 
+    ###
+     # 
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+    ###
+       
+    ---
+       
+    ###
+       
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    -----
+     ### 
+    #####
+    -----
+      #  
+     ### 
+    -----
+         
+      #  
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+     ##
+     ##
+    ---
+       
+       
+      #
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink"],
     vecs: parseShape(`\
-
+    ####
+    ####
+    ####
+    ----
+    ####
+    ####
+    ####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "yellow"],
     vecs: parseShape(`\
-
+    ######
+    ######
+    ------
+     #####
+    ######
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    #####
+    -----
+      ###
+      # #
+      ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    #####
+    -----
+         
+    # # #
+    #####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    # #
+    # #
+    # #
+    ---
+    ###
+    # #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+    # #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ####
+    ####
+    ####
+    ####
+    ----
+      ##
+      # 
+    ### 
+    #   
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+    # #
+       
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+      #
+      #
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+     ##
+    ###
+    ###
+    ---
+      #
+     ##
+    ###
+    ---
+       
+      #
+     ##
+    ---
+       
+       
+      #
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #####
+    #####
+    #####
+    -----
+    #####
+    #   #
+    #####
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ##
+    ##
+    --
+    ##
+    ##
+    --
+    ##
+    ##
+    --
+    ##
+    ##
+    --
+    ##
+    ##
+    --
+    ##
+    ##
+    --
+     #
+    ##
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+     # 
+    ###
+     ##
+    ---
+     # 
+    ###
+     ##
+    ---
+     # 
+    ###
+     ##
+    ---
+     # 
+    ###
+     ##
+    ---
+       
+      #
+     ##
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ###
+    ---
+    ###
+    ###
+    ###
+    ---
+       
+    ###
+    ###
+    ---
+       
+       
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+     ### 
+    #####
+    #####
+    -----
+         
+    # # #
+    #####
+    -----
+         
+     ### 
+     ### 
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    ###
+    ###
+    ---
+    ###
+    ###
+    ---
+       
+    ###
+    ---
+       
+    ###
+    ---
+       
+    ###
+    ---
+       
+    ###
+    ---
+       
+    ###
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+     ### 
+    #####
+    #####
+    -----
+         
+     ### 
+     ### 
+    -----
+         
+     ### 
+     ### 
+    -----
+         
+      #  
+      #  
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+       
+    # #
+       
+       
+    # #
+    ---
+       
+    ###
+    ###
+    ###
+    ###
+    ---
+       
+    ###
+     # 
+       
+       
+    ---
+       
+     # 
+     # 
+       
+       
+    ---
+       
+     # 
+       
+       
+       
+    ---
+       
+     # 
+       
+       
+       
+    ---
+       
+     # 
+       
+       
+       
+    ---
+     # 
+     # 
+       
+       
+       
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+       
+    # #
+    # #
+       
+    # #
+    ---
+       
+       
+    ###
+    ###
+    ###
+    ---
+       
+     # 
+     # 
+     # 
+     # 
+    ---
+       
+     # 
+     # 
+     # 
+     # 
+    ---
+       
+     # 
+       
+     # 
+       
+    ---
+     # 
+     # 
+       
+       
+       
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    #   #
+    #####
+    -----
+    #####
+    #####
+    -----
+    #   #
+    #####
+    -----
+         
+     ### 
     `),
   },
   {
-    blocks: [],
+    blocks: ["blue", "purple", "orange", "green", "red", "pink", "yellow"],
     vecs: parseShape(`\
-
+    # #
+    ###
+    ###
+     # 
+    ###
+    # #
+    ---
+       
+       
+     # 
+     # 
+    ###
+       
+    ---
+       
+       
+     # 
+       
+       
+       
+    ---
+       
+     # 
+    ###
+       
+       
+       
+    ---
+       
+       
+    ###
+       
+       
+       
     `),
   },
   {
