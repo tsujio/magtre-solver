@@ -13,11 +13,12 @@ camera.add(light)
 const boxGeometry = new RoundedBoxGeometry(1, 1, 1, 1)
 
 let renderer
+let controls
 
 export const setUpCanvas = (canvas) => {
   renderer = new THREE.WebGLRenderer({canvas: canvas})
   renderer.setSize(canvas.width, canvas.height)
-  const controls = new TrackballControls(camera, renderer.domElement)
+  controls = new TrackballControls(camera, renderer.domElement)
 
   const animate = () => {
     requestAnimationFrame(animate)
@@ -50,6 +51,7 @@ export const showBlocks = blocks => {
 
   scene.add(container)
 
+  controls.reset()
   camera.position.set(-7, -7, 7)
   camera.up.set(1, 1, 0)
   camera.lookAt(0, 0, 0)

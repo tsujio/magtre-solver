@@ -23,6 +23,7 @@ body {
     transition: left 0.1s;
     background: white;
     z-index: 999;
+    padding-bottom: 12px;
 }
 
 .sidebar.close {
