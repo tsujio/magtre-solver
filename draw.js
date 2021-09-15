@@ -52,6 +52,7 @@ export const showBlocks = blocks => {
 
   camera.position.set(-7, -7, 7)
   camera.up.set(1, 1, 0)
+  camera.lookAt(0, 0, 0)
 }
 
 export const canvasResized = canvas => {

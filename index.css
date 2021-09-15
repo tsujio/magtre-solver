@@ -7,6 +7,10 @@ body {
     display: none;
 }
 
+.material-icons {
+    vertical-align: middle;
+}
+
 .sidebar {
     position: absolute;
     top: 0;
@@ -39,6 +43,8 @@ body {
 .sidebar-close-button {
     border: none;
     border-radius: 50%;
+    width: 36px;
+    height: 36px;
     background: white;
     box-shadow: 1px 1px 2px silver;
     float: right;
@@ -102,6 +108,16 @@ body {
     padding: 8px 16px;
     min-width: 96px;
     outline: none;
+}
+
+.loading {
+    color: white;
+    animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
 }
 
 .message {

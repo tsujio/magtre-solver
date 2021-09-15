@@ -10,6 +10,7 @@ const sidebarOpenButton = document.querySelector("#sidebar-open-button")
 const sidebarCloseButton = document.querySelector("#sidebar-close-button")
 const solutionSelector = document.querySelector("#solution-selector")
 const messageContainer = document.querySelector("#message")
+const loading = document.querySelector("#loading")
 
 let solutions = []
 let worker
@@ -20,19 +21,35 @@ const resizeCanvas = () => {
   canvasResized(canvas)
 }
 
-window.addEventListener("resize", resizeCanvas)
-
-sidebarCloseButton.addEventListener("click", () => {
-  sidebar.classList.add("close")
-  mainContainer.classList.add("full")
-  setTimeout(resizeCanvas, 100)
-})
-
-sidebarOpenButton.addEventListener("click", () => {
+const openSidebar = () => {
   sidebar.classList.remove("close")
   mainContainer.classList.remove("full")
   setTimeout(resizeCanvas, 100)
+}
+
+const closeSidebar = () => {
+  sidebar.classList.add("close")
+  mainContainer.classList.add("full")
+  setTimeout(resizeCanvas, 100)
+}
+
+sidebarCloseButton.addEventListener("click", closeSidebar)
+sidebarOpenButton.addEventListener("click", openSidebar)
+
+let touchStartX, touchEndX
+sidebar.addEventListener("touchstart", e => {
+  touchStartX = touchEndX = e.touches[0].pageX
 })
+sidebar.addEventListener("touchmove", e => {
+  touchEndX = e.touches[0].pageX
+})
+sidebar.addEventListener("touchend", () => {
+  if (touchEndX - touchStartX < -30) {
+    closeSidebar()
+  }
+})
+
+window.addEventListener("resize", resizeCanvas)
 
 solutionSelector.addEventListener("change", e => {
   const solution = solutions[parseInt(e.target.value)]
@@ -50,8 +67,8 @@ const startSearch = target => {
   solutions = []
   solutionSelector.innerHTML = ""
   showBlocks([])
-
-  messageContainer.textContent = "Searching solutions..."
+  messageContainer.textContent = ""
+  loading.classList.remove("hidden")
 
   const start = new Date()
   console.log("started", start, target)
@@ -71,7 +88,7 @@ const startSearch = target => {
 
         solutions.push(solution)
 
-        messageContainer.textContent = `Searching solutions... (${solutions.length} solution${solutions.length > 1 ? "s" : ""} found)`
+        messageContainer.textContent = `${solutions.length} solution${solutions.length > 1 ? "s" : ""} found`
 
         // Add to selector
         const o = document.createElement("option")
@@ -90,7 +107,7 @@ const startSearch = target => {
 
       case "end":
         console.log("end")
-        messageContainer.textContent = `${solutions.length} solution${solutions.length > 1 ? "s" : ""} found`
+        loading.classList.add("hidden")
         break
     }
   }
