@@ -103,6 +103,7 @@ targets.forEach((t, i) => {
   img.className = "target-image"
   img.src = createImageURL(t.vecs)
   img.addEventListener("click", () => {
+    solutionSelector.classList.remove("hidden")
     startSearch(t)
   })
   targetList.appendChild(img)
