@@ -154,17 +154,18 @@ export const setBlocksStatic = (blockPlacements, delay) => {
 
     // Set updateFunc
     let i = 0
-    const shift = p.after.objectPosition.clone().sub(block.object.position)
-    const rotation = p.after.objectRotation.toVector3().clone().sub(block.object.rotation.toVector3())
+    const containerShift = p.after.containerPosition.clone().sub(block.container.position)
+    const containerRotation = p.after.containerRotation.toVector3().clone().sub(block.container.rotation.toVector3())
+    const objectShift = p.after.objectPosition.clone().sub(block.object.position)
+    const objectRotation = p.after.objectRotation.toVector3().clone().sub(block.object.rotation.toVector3())
     block.updateFunc = () => {
       if (i <= delay.complete) {
-        block.container.position.setLength(block.container.position.length() / 2)
+        block.container.position.add(containerShift.clone().divideScalar(delay.complete))
         const crv = block.container.rotation.toVector3()
-        block.container.rotation.setFromVector3(crv.setLength(crv.length() / 2))
-
-        block.object.position.add(shift.clone().divideScalar(delay.complete))
+        block.container.rotation.setFromVector3(crv.add(containerRotation.clone().divideScalar(delay.complete)), p.after.containerRotation.order)
+        block.object.position.add(objectShift.clone().divideScalar(delay.complete))
         const brv = block.object.rotation.toVector3()
-        block.object.rotation.setFromVector3(brv.add(rotation.clone().divideScalar(delay.complete)), p.after.objectRotation.order)
+        block.object.rotation.setFromVector3(brv.add(objectRotation.clone().divideScalar(delay.complete)), p.after.objectRotation.order)
 
         if (id === Object.keys(placementParameters).sort()[0]) {
           container.position.sub(containerPositionTargetDelta.clone().divideScalar(delay.complete))
