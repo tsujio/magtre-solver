@@ -72,6 +72,19 @@ solutionSelector.addEventListener("change", e => {
   })), {complete: 60})
 })
 
+const updateSolutionSelectorItems = () => {
+  let i = solutionSelector.querySelectorAll("option").length
+  while (i < solutions.length) {
+    const o = document.createElement("option")
+    o.textContent = i + 1
+    o.setAttribute("value", i)
+    solutionSelector.appendChild(o)
+    i++
+  }
+}
+
+solutionSelector.addEventListener("click", updateSolutionSelectorItems)
+
 const startSearch = target => {
   if (worker) {
     worker.terminate()
@@ -103,13 +116,9 @@ const startSearch = target => {
 
         messageContainer.textContent = `${solutions.length} pattern${solutions.length > 1 ? "s" : ""} found`
 
-        // Add to selector
-        const o = document.createElement("option")
-        o.textContent = solutions.length
-        o.setAttribute("value", solutions.length - 1)
-        solutionSelector.appendChild(o)
-
         if (solutions.length === 1) {
+          updateSolutionSelectorItems()
+
           setBlocksStatic(solution.map(s => ({
             id: s.block.id,
             rotations: s.rotations,
