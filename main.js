@@ -1,5 +1,5 @@
 import { blocks, targets } from "./data.js"
-import { setUpCanvas, showBlocks, canvasResized, createImageURL } from "./draw.js"
+import { setUpGraphics, setBlocksFloating, setBlocksStatic, canvasResized, createImageURL } from "./draw.js"
 
 const smallWindowWidthThreshold = 1000
 
@@ -65,10 +65,11 @@ window.addEventListener("resize", resizeCanvas)
 
 solutionSelector.addEventListener("change", e => {
   const solution = solutions[parseInt(e.target.value)]
-  showBlocks(solution.map(s => ({
-    color: s.block.color,
-    vecs: s.vecs,
-  })))
+  setBlocksStatic(solution.map(s => ({
+    id: s.block.id,
+    rotations: s.rotations,
+    shift: s.shift,
+  })), {complete: 60})
 })
 
 const startSearch = target => {
@@ -79,7 +80,6 @@ const startSearch = target => {
   solutions = []
   solutionSelector.classList.remove("hidden")
   solutionSelector.innerHTML = ""
-  showBlocks([])
   messageContainer.textContent = ""
   loading.classList.remove("hidden")
 
@@ -110,10 +110,11 @@ const startSearch = target => {
         solutionSelector.appendChild(o)
 
         if (solutions.length === 1) {
-          showBlocks(solution.map(s => ({
-            color: s.block.color,
-            vecs: s.vecs,
-          })))
+          setBlocksStatic(solution.map(s => ({
+            id: s.block.id,
+            rotations: s.rotations,
+            shift: s.shift,
+          })), {complete: 60})
         }
 
         break
@@ -125,7 +126,9 @@ const startSearch = target => {
     }
   }
 
-  worker.postMessage([target, blocks.filter(b => target.blocks.includes(b.id))])
+  const targetBlocks = blocks.filter(b => target.blocks.includes(b.id))
+  worker.postMessage([target, targetBlocks])
+  setBlocksFloating(targetBlocks.map(b => b.id))
 }
 
 const selectTarget = target => {
@@ -174,7 +177,7 @@ targets.forEach(t => {
   targetList.appendChild(node)
 })
 
-setUpCanvas(canvas)
+setUpGraphics(canvas, blocks)
 resizeCanvas()
 
 const targetId = new URL(window.location).searchParams.get("target")

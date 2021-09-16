@@ -241,6 +241,13 @@ const isDuplicatedSolution = solution => {
   return false
 }
 
+const toRotationAxisName = r => {
+  if (r === rotateX) return "x"
+  if (r === rotateY) return "y"
+  if (r === rotateZ) return "z"
+  throw new Error("Invalid rotation")
+}
+
 onmessage = e => {
   const [target, blocks] = e.data
   resolve(target.vecs, blocks.map(b => b.vecs), [], solution => {
@@ -253,7 +260,8 @@ onmessage = e => {
       message: "found",
       solution: solution.map((b, i) => ({
         block: blocks[i],
-        vecs: b.vecs,
+        rotations: [[toRotationAxisName(b.r1), b.n1], [toRotationAxisName(b.r2), b.n2], [toRotationAxisName(b.r3), b.n3]],
+        shift: b.shift,
       }))
     })
   })
