@@ -26,6 +26,8 @@ title.addEventListener("click", () => {
 })
 
 const resizeCanvas = () => {
+  mainContainer.style.height = window.innerHeight + "px"
+  sidebar.style.height = window.innerHeight + "px"
   canvas.width = canvasContainer.clientWidth
   canvas.height = canvasContainer.clientHeight
   canvasResized(canvas)
@@ -160,9 +162,6 @@ window.addEventListener("popstate", () => {
   const targetId = new URL(window.location).searchParams.get("target")
   selectTarget(targetId === null ? null : targets[parseInt(targetId) - 1])
 })
-
-mainContainer.style.height = window.innerHeight + "px"
-sidebar.style.height = window.innerHeight = "px"
 
 targets.forEach(t => {
   const node = targetListItemTemplate.content.cloneNode(true)
