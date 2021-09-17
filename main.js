@@ -17,12 +17,13 @@ const messageContainer = document.querySelector("#message")
 const loading = document.querySelector("#loading")
 
 let solutions = []
-let worker
 
 title.addEventListener("click", () => {
   const url = new URL(window.location)
   url.search = ""
-  document.location = url.toString()
+  history.pushState({}, "", url)
+
+  selectTarget(null)
 })
 
 const resizeCanvas = () => {
@@ -87,62 +88,49 @@ const updateSolutionSelectorItems = () => {
 
 solutionSelector.addEventListener("click", updateSolutionSelectorItems)
 
-const startSearch = target => {
+let worker
+
+const startSearch = (target, onFound, onCompleted) => {
   if (worker) {
-    worker.terminate()
+    worker.instance.terminate()
+    worker.instance.id = null
   }
 
-  solutions = []
-  solutionSelector.classList.remove("hidden")
-  solutionSelector.innerHTML = ""
-  messageContainer.textContent = ""
-  loading.classList.remove("hidden")
-
-  const start = new Date()
-  console.log("started", start, target)
-
-  worker = new Worker("./worker.js")
-  worker.onerror = e => console.log(e)
-  worker.onmessage = e => {
+  const id = Math.random().toString()
+  const w = new Worker("./worker.js")
+  w.onerror = e => console.log(e)
+  w.onmessage = e => {
+    if (id !== worker.id) {
+      return
+    }
     switch (e.data.message) {
       case "log":
         console.log(...e.data.body)
         break
-
       case "found":
-        const solution = e.data.solution
-
-        console.log("found", (new Date() - start) / 1000, solution)
-
-        solutions.push(solution)
-
-        messageContainer.textContent = `${solutions.length} pattern${solutions.length > 1 ? "s" : ""} found`
-
-        if (solutions.length === 1) {
-          updateSolutionSelectorItems()
-
-          setBlocksStatic(solution.map(s => ({
-            id: s.block.id,
-            rotations: s.rotations,
-            shift: s.shift,
-          })), {complete: 60})
-        }
-
+        if (onFound) onFound(e.data.solution)
         break
-
       case "end":
-        console.log("end")
-        loading.classList.add("hidden")
+        if (onCompleted) onCompleted()
         break
     }
   }
 
+  worker = {id: id, instance: w}
+
   const targetBlocks = blocks.filter(b => target.blocks.includes(b.id))
-  worker.postMessage([target, targetBlocks])
+  w.postMessage([target, targetBlocks])
   setBlocksFloating(targetBlocks.map(b => b.id))
 }
 
+let randomTargetSelectTimer
+
 const selectTarget = target => {
+  if (randomTargetSelectTimer) {
+    clearInterval(randomTargetSelectTimer)
+    randomTargetSelectTimer = null
+  }
+
   targetList.querySelectorAll(".target-list-item").forEach(elm => {
     elm.classList.remove("active")
   })
@@ -151,16 +139,85 @@ const selectTarget = target => {
     closeSidebar()
   }
 
+  messageContainer.textContent = ""
+
   if (target) {
     targetList.querySelector(`.target-list-item[data-target-id='${target.id}']`).classList.add("active")
 
-    startSearch(target)
+    solutions = []
+    solutionSelector.classList.remove("hidden")
+    solutionSelector.innerHTML = ""
+    loading.classList.remove("hidden")
+
+    const start = new Date()
+    startSearch(target, solution => {
+      console.log("found", (new Date() - start) / 1000, solution)
+
+      solutions.push(solution)
+
+      messageContainer.textContent = `${solutions.length} pattern${solutions.length > 1 ? "s" : ""} found`
+
+      if (solutions.length === 1) {
+        updateSolutionSelectorItems()
+
+        setBlocksStatic(solution.map(s => ({
+          id: s.block.id,
+          rotations: s.rotations,
+          shift: s.shift,
+        })), {complete: 60})
+      }
+    }, () => {
+      loading.classList.add("hidden")
+    })
+  } else {
+    solutionSelector.classList.add("hidden")
+    loading.classList.add("hidden")
+
+    let timer
+    const selectRandomTarget = () => {
+      if (randomTargetSelectTimer !== timer) {
+        return
+      }
+
+      const t = targets[Math.floor(Math.random() * targets.length)]
+      const sl = []
+      let i = 0
+      startSearch(t, solution => {
+        if (randomTargetSelectTimer !== timer) {
+          return
+        }
+        sl.push(solution)
+        if (i === 0) {
+          timer = setTimeout(() => {
+            if (randomTargetSelectTimer !== timer) {
+              return
+            }
+            setBlocksStatic(sl[sl.length - 1].map(s => ({
+              id: s.block.id,
+              rotations: s.rotations,
+              shift: s.shift,
+            })), {complete: 60})
+
+            timer = setTimeout(selectRandomTarget, 3000)
+            randomTargetSelectTimer = timer
+          }, 1500)
+          randomTargetSelectTimer = timer
+        }
+        i++
+      })
+    }
+    timer = setTimeout(selectRandomTarget, 0)
+    randomTargetSelectTimer = timer
   }
 }
 
-window.addEventListener("popstate", () => {
-  const targetId = new URL(window.location).searchParams.get("target")
+const selectTargetByUrl = url => {
+  const targetId = url.searchParams.get("target")
   selectTarget(targetId === null ? null : targets[parseInt(targetId) - 1])
+}
+
+window.addEventListener("popstate", () => {
+  selectTargetByUrl(new URL(window.location))
 })
 
 targets.forEach(t => {
@@ -188,7 +245,4 @@ targets.forEach(t => {
 setUpGraphics(canvas, blocks)
 resizeCanvas()
 
-const targetId = new URL(window.location).searchParams.get("target")
-if (targetId) {
-  selectTarget(targets[parseInt(targetId) - 1])
-}
+selectTargetByUrl(new URL(window.location))
