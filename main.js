@@ -182,12 +182,15 @@ const selectTarget = target => {
       const t = targets[Math.floor(Math.random() * targets.length)]
       const sl = []
       let i = 0
+      const start = new Date()
       startSearch(t, solution => {
         if (randomTargetSelectTimer !== timer) {
           return
         }
         sl.push(solution)
         if (i === 0) {
+          const timeout = Math.max(5000 - (new Date() - start), 0)
+          console.log(timeout)
           timer = setTimeout(() => {
             if (randomTargetSelectTimer !== timer) {
               return
@@ -200,7 +203,7 @@ const selectTarget = target => {
 
             timer = setTimeout(selectRandomTarget, 3000)
             randomTargetSelectTimer = timer
-          }, 1500)
+          }, timeout)
           randomTargetSelectTimer = timer
         }
         i++
