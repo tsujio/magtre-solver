@@ -19,7 +19,7 @@ const blockObjects = {}
 let renderer
 let controls
 
-const setCameraAtNormalPosition = () => {
+export const setCameraAtNormalPosition = () => {
   controls.reset()
   camera.position.set(-7, -7, 7)
   camera.up.set(1, 1, 0)
@@ -182,8 +182,6 @@ export const setBlocksStatic = (blockPlacements, delay) => {
       }
     }
   }
-
-  setCameraAtNormalPosition()
 }
 
 export const canvasResized = canvas => {

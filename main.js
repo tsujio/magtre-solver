@@ -1,5 +1,5 @@
 import { blocks, targets } from "./data.js"
-import { setUpGraphics, setBlocksFloating, setBlocksStatic, canvasResized, createImageURL } from "./draw.js"
+import { setUpGraphics, setCameraAtNormalPosition, setBlocksFloating, setBlocksStatic, canvasResized, createImageURL } from "./draw.js"
 
 const smallWindowWidthThreshold = 1000
 
@@ -140,6 +140,8 @@ const selectTarget = target => {
   }
 
   messageContainer.textContent = ""
+
+  setCameraAtNormalPosition()
 
   if (target) {
     targetList.querySelector(`.target-list-item[data-target-id='${target.id}']`).classList.add("active")
