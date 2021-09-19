@@ -196,7 +196,7 @@ const selectTarget = target => {
             if (randomTargetSelectTimer !== timer) {
               return
             }
-            setBlocksStatic(sl[sl.length - 1].map(s => ({
+            setBlocksStatic(sl[Math.floor(Math.random() * sl.length)].map(s => ({
               id: s.block.id,
               rotations: s.rotations,
               shift: s.shift,
